@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan JavaScript 02 - To-Do List</title>
+</head>
+<body>
+
+    <h2>To-Do List</h2>
+
+    <!-- Input text dan tombol tambah -->
+    <input type="text" id="inputTugas" placeholder="Tulis tugas...">
+    <button onclick="tambahTugas()">Tambah</button>
+
+    <!-- Daftar item to-do -->
+    <ul id="daftarTugas"></ul>
+
+    <script>
+        function tambahTugas() {
+            // 1. Ambil elemen input dan daftar
+            const input = document.getElementById('inputTugas');
+            const daftar = document.getElementById('daftarTugas');
+            
+            // 2. Ambil nilai input dan hapus spasi di awal/akhir
+            const teksTugas = input.value.trim();
+
+            // 3. Validasi: Jangan tambahkan jika input kosong
+            if (teksTugas === "") {
+                alert("Harap masukkan tugas terlebih dahulu!");
+                return;
+            }
+
+            // 4. Buat elemen li baru
+            const liBaru = document.createElement('li');
+            liBaru.textContent = teksTugas;
+
+            // 5. Masukkan elemen li baru ke dalam daftar (ul)
+            daftar.appendChild(liBaru);
+
+            // 6. Kosongkan input setelah berhasil ditambahkan
+            input.value = "";
+        }
+    </script>
+
+</body>
+</html>
