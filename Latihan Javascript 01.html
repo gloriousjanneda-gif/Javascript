@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Sederhana</title>
+</head>
+<body>
+
+    <script>
+        let angka1 = parseFloat(prompt("Masukkan angka 1:"));
+        let angka2 = parseFloat(prompt("Masukkan angka 2:"));
+        let operator = prompt("Masukkan operator (+, -, *, /):");
+        let hasil;
+
+        if (isNaN(angka1) || isNaN(angka2)) {
+            hasil = "Input angka tidak valid!";
+        } else {
+            switch (operator) {
+                case '+':
+                    hasil = angka1 + angka2;
+                    break;
+                case '-':
+                    hasil = angka1 - angka2;
+                    break;
+                case '*':
+                    hasil = angka1 * angka2;
+                    break;
+                case '/':
+                    if (angka2 !== 0) {
+                        hasil = angka1 / angka2;
+                    } else {
+                        hasil = "Tidak bisa membagi dengan angka nol!";
+                    }
+                    break;
+                default:
+                    hasil = "Operator tidak dikenali!";
+            }
+        }
+
+        alert("Hasil: " + hasil);
+    </script>
+
+</body>
+</html>
