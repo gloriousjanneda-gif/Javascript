@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan JavaScript 03 - Stopwatch</title>
+    <style>
+        #tampilanDetik {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Stopwatch Detik</h2>
+
+    <!-- Tempat menampilkan hitungan detik -->
+    <div id="tampilanDetik">0</div>
+
+    <!-- Tombol Kontrol (Sudah diubah menjadi Start dan Stop) -->
+    <button onclick="start()">Start</button>
+    <button onclick="stop()">Stop</button>
+    <button onclick="reset()">Reset</button>
+
+    <script>
+        let detik = 0;
+        let interval = null;
+
+        function start() {
+            // Mencegah multiple interval jika tombol Start ditekan berulang kali
+            if (interval !== null) return;
+
+            // Menambah 1 detik setiap 1000 milidetik (1 detik) secara realtime
+            interval = setInterval(function() {
+                detik++;
+                document.getElementById('tampilanDetik').textContent = detik;
+            }, 1000);
+        }
+
+        function stop() {
+            // Menghentikan timer
+            clearInterval(interval);
+            interval = null;
+        }
+
+        function reset() {
+            // Menghentikan timer dan mengembalikan angka detik ke 0
+            stop();
+            detik = 0;
+            document.getElementById('tampilanDetik').textContent = detik;
+        }
+    </script>
+
+</body>
+</html>
