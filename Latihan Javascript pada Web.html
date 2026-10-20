@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOTO GARAGE - Spesialis Garasi Motor 100cc - 1000cc</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --brand-yellow: #ffc107;
+            --brand-yellow-hover: #e0a800;
+            --brand-dark: #121212;
+            --brand-card-bg: #1e1e1e;
+            --brand-text-muted: #d0d0d0;
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            padding-top: 70px;
+            background-color: #0f0f11;
+            color: #f0f0f0;
+            overflow-x: hidden;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        /* Teks pendukung & Muted diperjelas agar tidak redup */
+        .text-muted {
+            color: #d0d0d0 !important;
+        }
+        .small, small {
+            color: #e0e0e0 !important;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121212;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--brand-yellow);
+            border-radius: 5px;
+        }
+
+        /* Navbar Customization */
+        .navbar {
+            background-color: rgba(18, 18, 18, 0.95) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 193, 7, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .brand-logo {
+            color: var(--brand-yellow) !important;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            font-size: 1.4rem;
+        }
+
+        .navbar-dark .navbar-nav .nav-link {
+            color: #e8e8e8;
+            font-weight: 600;
+            margin: 0 5px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-dark .navbar-nav .nav-link:hover,
+        .navbar-dark .navbar-nav .nav-link.active {
+            color: #121212 !important;
+            background-color: var(--brand-yellow);
+            font-weight: 700;
+            box-shadow: 0 0 15px rgba(255, 193, 7, 0.4);
+        }
+
+        /* Hero Section */
+        #home {
+            min-height: 90vh;
+            background: linear-gradient(90deg, rgba(15, 15, 17, 0.85) 0%, rgba(15, 15, 17, 0.75) 50%, rgba(0, 0, 0, 0.3) 100%), 
+                        url('bg-garasi.jpg') right center / cover no-repeat fixed;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero-content-box {
+            background: transparent;
+            backdrop-filter: none;
+            border-radius: 20px;
+            padding: 35px;
+            border: none;
+            box-shadow: none;
+        }
+
+        .hero-badge {
+            background: rgba(255, 193, 7, 0.2);
+            border: 1px solid var(--brand-yellow);
+            color: var(--brand-yellow);
+            display: inline-block;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        .stat-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+            transition: transform 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--brand-yellow);
+        }
+
+        /* Services Cards */
+        .service-card {
+            background-color: var(--brand-card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--brand-yellow), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 193, 7, 0.2);
+            border-color: rgba(255, 193, 7, 0.4);
+        }
+
+        .service-card:hover::before {
+            opacity: 1;
+        }
+
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 193, 7, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--brand-yellow);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        /* Calculator Card */
+        .calc-card {
+            background: linear-gradient(145deg, #1a1a1e, #24242b);
+            border: 1px solid rgba(255, 193, 7, 0.4);
+            border-radius: 16px;
+        }
+
+        /* Section Title Styling */
+        .section-subtitle {
+            color: var(--brand-yellow);
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 2px;
+            font-size: 0.95rem;
+        }
+
+        .section-title {
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        /* Chart Styling */
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 380px;
+            width: 100%;
+        }
+
+        /* Form Styling */
+        .form-control, .form-select {
+            background-color: #141417;
+            border: 1px solid #44444c;
+            color: #ffffff;
+            padding: 12px 16px;
+            border-radius: 8px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: #1a1a1e;
+            border-color: var(--brand-yellow);
+            color: #ffffff;
+            box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.3);
+        }
+
+        .form-control::placeholder {
+            color: #9e9e9e;
+        }
+
+        /* Custom Button */
+        .btn-yellow {
+            background-color: var(--brand-yellow);
+            color: #121212;
+            font-weight: 700;
+            border-radius: 8px;
+            padding: 12px 28px;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+        }
+
+        .btn-yellow:hover {
+            background-color: var(--brand-yellow-hover);
+            color: #000000;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
+        }
+
+        .btn-outline-yellow {
+            border: 2px solid var(--brand-yellow);
+            color: var(--brand-yellow);
+            font-weight: 700;
+            border-radius: 8px;
+            padding: 10px 26px;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-yellow:hover {
+            background-color: var(--brand-yellow);
+            color: #121212;
+            transform: translateY(-2px);
+        }
+
+        /* Gallery Item */
+        .gallery-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            height: 240px;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        /* Modal Custom Dark */
+        .modal-content {
+            background-color: var(--brand-card-bg);
+            border: 1px solid rgba(255, 193, 7, 0.4);
+            color: #fff;
+            border-radius: 16px;
+        }
+    </style>
+</head>
+<body data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="100" tabindex="0">
+
+    <!-- NAVBAR HEADER -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand brand-logo d-flex align-items-center gap-2" href="#home">
+                <span>🏍️</span> MOTO GARAGE
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">Layanan</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">Tentang Kami</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#gallery">Galeri & Ulasan</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Kontak</a>
+                    </li>
+                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                        <a href="#contact" class="btn btn-yellow btn-sm py-2 px-3">Booking Servis</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- SECTION 1: HOME (HERO) -->
+    <section id="home">
+        <div class="container">
+            <div class="row align-items-center justify-content-center min-vh-75 py-5">
+                <div class="col-lg-10 text-center">
+                    <div class="hero-content-box">
+                        <div class="hero-badge mb-3">
+                            <i class="fa-solid fa-gauge-high me-1"></i> Workshop Performance & Maintenance Presisi
+                        </div>
+                        <h1 class="display-3 fw-bold mb-3 text-white">
+                            Spesialis Garasi Motor <span class="text-warning">100cc - 1000cc</span>
+                        </h1>
+                        <p class="lead text-light opacity-90 mb-4 max-w-750 mx-auto">
+                            Layanan perawatan berkala, modifikasi balap, hingga tuning performa profesional menggunakan mesin Dyno terkalibrasi untuk semua kelas sepeda motor Anda.
+                        </p>
+                        <div class="d-flex flex-wrap gap-3 justify-content-center mb-5">
+                            <a href="#contact" class="btn btn-yellow btn-lg">
+                                <i class="fa-solid fa-calendar-check me-2"></i>Konsultasi Gratis
+                            </a>
+                            <a href="#services" class="btn btn-outline-yellow btn-lg">
+                                <i class="fa-solid fa-wrench me-2"></i>Lihat Layanan
+                            </a>
+                        </div>
+
+                        <!-- Live Key Stats Counter -->
+                        <div class="row g-3 justify-content-center">
+                            <div class="col-md-4 col-4">
+                                <div class="stat-card text-center">
+                                    <h3 class="fw-bold text-warning mb-0">5,000+</h3>
+                                    <small class="text-muted fw-semibold">Motor Terlayani</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-4">
+                                <div class="stat-card text-center">
+                                    <h3 class="fw-bold text-warning mb-0">100%</h3>
+                                    <small class="text-muted fw-semibold">Presisi Dyno</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-4">
+                                <div class="stat-card text-center">
+                                    <h3 class="fw-bold text-warning mb-0">15+</h3>
+                                    <small class="text-muted fw-semibold">Mekanik Pro</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: SERVICES -->
+    <section id="services" class="bg-dark">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="section-subtitle">Layanan Unggulan</span>
+                <h2 class="section-title display-5">Solusi Servis Berdasarkan Kelas Engine</h2>
+                <p class="text-muted max-w-600 mx-auto fs-6">Setiap kelas motor membutuhkan penanganan spesifik. Pilih kelas kendaraan Anda untuk melihat detail servis.</p>
+            </div>
+
+            <div class="row g-4 mb-5">
+                <!-- Card 1: Commuter -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card h-100 p-4 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="service-icon">
+                                <i class="fa-solid fa-motorcycle"></i>
+                            </div>
+                            <span class="badge bg-secondary mb-2 fs-6">Daily & Commuter</span>
+                            <h4 class="fw-bold text-white mb-3">Kelas Commuter (100cc - 150cc)</h4>
+                            <p class="text-muted small fs-6">Perawatan rutin harian untuk efisiensi bahan bakar maksimal dan keandalan mesin jarak dekat maupun jauh.</p>
+                            <ul class="list-unstyled text-light small my-4 fs-6">
+                                <li class="mb-2"><i class="fa-solid fa-check text-warning me-2"></i>Tune-up & Servis Injeksi / Karburator</li>
+                                <li class="mb-2"><i class="fa-solid fa-check text-warning me-2"></i>Pembersihan & Ganti Oli CVT / Rantai</li>
+                                <li class="mb-2"><i class="fa-solid fa-check text-warning me-2"></i>Cek Kelistrikan & Aki Digital</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary">
+                                <span class="text-warning fw-bold fs-5">Mulai Rp 75.000</span>
+                                <button class="btn btn-outline-yellow btn-sm" onclick="openServiceModal('Commuter', '100cc - 150cc', 'Rp 75.000', ['Tune-up Injeksi/Karburator', 'Ganti Oli Mesin & Gardan', 'Pembersihan Filter Udara', 'Reset ECU Standar', 'Pengecekan Rem & Ban'])">Detail</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Sport -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card h-100 p-4 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="service-icon">
+                                <i class="fa-solid fa-gauge-high"></i>
+                            </div>
+                            <span class="badge bg-warning text-dark mb-2 fs-6 fw-bold">Sport Performance</span>
+                            <h4 class="fw-bold text-white mb-3">Kelas Sport (250cc - 600cc)</h4>
+                            <p class="text-muted small fs-6">Peningkatan performa menengah, tuning suspensi, dan optimalisasi sistem pembakaran kendaraan sport.</p>
+                            <ul class="list-unstyled text-light small my-4 fs-6">
+                                <li class="mb-2"><i class="fa-solid fa-check text-warning me-2"></i>Remap / Optimization ECU Standar</li>
+                                <li class="mb-2"><i class="fa-solid fa-check text-warning me-2"></i>Upgrade Pengereman & Re-valve Suspensi</li>
+                                <li class="mb-2"><i class="fa-solid fa-check text-warning me-2"></i>Pemasangan Knalpot Full-System</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary">
+                                <span class="text-warning fw-bold fs-5">Mulai Rp 250.000</span>
+                                <button class="btn btn-outline-yellow btn-sm" onclick="openServiceModal('Sport', '250cc - 600cc', 'Rp 250.000', ['Remap ECU Standar/Racing', 'Setup Suspensi Depan/Belakang', 'Pembersihan Injektor Ultrasonik', 'Penyetelan Rantai Balap', 'Dyno Check Basic'])">Detail</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Superbike -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card h-100 p-4 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="service-icon">
+                                <i class="fa-solid fa-flag-checkered"></i>
+                            </div>
+                            <span class="badge bg-danger mb-2 fs-6">Superbike & Race</span>
+                            <h4 class="fw-bold text-white mb-3">Kelas Superbike (600cc - 1000cc)</h4>
+                            <p class="text-muted small fs-6">Penanganan presisi tinggi untuk MOGE dan Superbike dengan peralatan komputer terkalibrasi pabrikan.</p>
+                            <ul class="list-unstyled text-light small my-4 fs-6">
+                                <li class="mb-2"><i class="fa-solid fa-check text-warning me-2"></i>Full Dyno Tuning & Air-Fuel Ratio Calibration</li>
+                                <li class="mb-2"><i class="fa-solid fa-check text-warning me-2"></i>Overhaul Mesin & Blueprinting Balap</li>
+                                <li class="mb-2"><i class="fa-solid fa-check text-warning me-2"></i>Diagnostik Scanner Komputer MOGE</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary">
+                                <span class="text-warning fw-bold fs-5">Mulai Rp 750.000</span>
+                                <button class="btn btn-outline-yellow btn-sm" onclick="openServiceModal('Superbike', '600cc - 1000cc', 'Rp 750.000', ['Dyno Tuning Custom', 'Diagnostik Scanner Multi-Brand', 'Flushing Minyak Rem ABS', 'Kalibrasi Throttle Body / Ride-by-Wire', 'Superbike Engine Blueprinting'])">Detail</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Estimator Calculator -->
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="calc-card p-4 p-md-5">
+                        <div class="row align-items-center">
+                            <div class="col-md-6 mb-4 mb-md-0">
+                                <h4 class="fw-bold text-warning mb-2"><i class="fa-solid fa-calculator me-2"></i>Kalkulator Estimasi Biaya Servis</h4>
+                                <p class="text-muted small mb-0 fs-6">Hitung estimasi awal biaya perawatan motor Anda secara transparan sebelum melakukan booking.</p>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <label class="form-label small text-light fw-bold">Kategori Motor</label>
+                                        <select class="form-select form-select-sm" id="calcCC" onchange="calculateEstimate()">
+                                            <option value="100">100cc - 150cc</option>
+                                            <option value="250">250cc - 500cc</option>
+                                            <option value="600">600cc - 1000cc</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label small text-light fw-bold">Jenis Layanan</label>
+                                        <select class="form-select form-select-sm" id="calcType" onchange="calculateEstimate()">
+                                            <option value="tuneup">Tune-up Rutin</option>
+                                            <option value="dyno">Dyno Tuning</option>
+                                            <option value="full">Servis Besar / Overhaul</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12 mt-3 text-center bg-dark p-3 rounded-3 border border-secondary">
+                                        <small class="text-light d-block fw-semibold fs-6">Estimasi Biaya Transparan:</small>
+                                        <span class="fs-3 fw-bold text-warning" id="calcResult">Rp 75.000</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 3: ABOUT & DYNO CHART -->
+    <section id="about" class="bg-black">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-5">
+                    <span class="section-subtitle">Tentang Moto Garage</span>
+                    <h2 class="section-title display-6">Presisi Tanpa Kompromi Untuk Mesin Anda</h2>
+                    <p class="text-muted fs-6">
+                        MOTO GARAGE berdiri sejak 2018 dengan komitmen menghadirkan standar perawatan sirkuit balap ke jalan raya. Setiap pengerjaan dilakukan oleh teknisi tersertifikasi menggunakan tools modern.
+                    </p>
+                    
+                    <div class="d-flex align-items-start gap-3 my-4">
+                        <div class="fs-2 text-warning"><i class="fa-solid fa-microchip"></i></div>
+                        <div>
+                            <h5 class="fw-bold text-white mb-1">Diagnostik Komputer Terkini</h5>
+                            <p class="text-muted small mb-0 fs-6">Mendeteksi gangguan sistem injeksi dan sensor elektronik secara cepat dan presisi.</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-start gap-3 my-4">
+                        <div class="fs-2 text-warning"><i class="fa-solid fa-chart-line"></i></div>
+                        <div>
+                            <h5 class="fw-bold text-white mb-1">Dyno Test Terkalibrasi</h5>
+                            <p class="text-muted small mb-0 fs-6">Mengukur Horsepower (HP) & Torsi nyata kendaraan sebelum dan sesudah tuning.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Chart.js Box -->
+                <div class="col-lg-7">
+                    <div class="card bg-dark text-white p-4 rounded-4 shadow-lg border border-secondary">
+                        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+                            <div>
+                                <h5 class="m-0 text-warning fw-bold d-flex align-items-center gap-2">
+                                    <i class="fa-solid fa-chart-column"></i> Performance & Dyno Test Result
+                                </h5>
+                                <small class="text-muted fw-semibold">Grafik Perbandingan Tenaga Mesin (Horsepower)</small>
+                            </div>
+                        </div>
+
+                        <!-- Canvas Dynamic ChartJS -->
+                        <div class="chart-container">
+                            <canvas id="dynoChart"></canvas>
+                        </div>
+                        <div class="text-center mt-3">
+                            <small class="text-muted opacity-90"><i class="fa-solid fa-info-circle me-1"></i> Data rata-rata peningkatan Horsepower (HP) setelah Dyno Tuning di MOTO GARAGE</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: GALLERY & TESTIMONIALS -->
+    <section id="gallery" class="bg-dark">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="section-subtitle">Galeri & Ulasan</span>
+                <h2 class="section-title display-5">Kepuasan Komunitas Motovlog & Rider</h2>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div class="row g-3 mb-5">
+                <div class="col-md-4 col-6">
+                    <div class="gallery-item">
+                        <img src="Bmw_1000RR.jpg" alt="Superbike Servis BMW S1000RR">
+                        <div class="gallery-overlay">
+                            <div>
+                                <h6 class="fw-bold text-white mb-0">Superbike Tuning</h6>
+                                <small class="text-warning fw-bold">BMW S1000RR</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-6">
+                    <div class="gallery-item">
+                        <img src="Zx25rr.jpg" alt="Dyno Test ZX-25R">
+                        <div class="gallery-overlay">
+                            <div>
+                                <h6 class="fw-bold text-white mb-0">Dyno Test Session</h6>
+                                <small class="text-warning fw-bold">ZX-25R Performance</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-12">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=800&q=80" alt="Engine Overhaul">
+                        <div class="gallery-overlay">
+                            <div>
+                                <h6 class="fw-bold text-white mb-0">Precision Overhaul</h6>
+                                <small class="text-warning fw-bold">Commuter & Sport</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonials Cards -->
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="service-card p-4 h-100">
+                        <div class="text-warning mb-2">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-light small italic fs-6">"Dyno tuning ZX25R saya berasa beda banget! Tarikan makin enteng dan naiknya napas mesin panjang. Mekaniknya ramah & informatif."</p>
+                        <div class="d-flex align-items-center gap-3 mt-3">
+                            <div class="bg-warning text-dark fw-bold rounded-circle p-2 fs-6">RD</div>
+                            <div>
+                                <h6 class="fw-bold text-white mb-0">Rian Dimas</h6>
+                                <small class="text-muted fw-semibold">Rider ZX-25R</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="service-card p-4 h-100">
+                        <div class="text-warning mb-2">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-light small italic fs-6">"Servis harian Vario 150 di sini sangat transparan. Dikasih tau bagian yang harus diganti tanpa asal vonis. Recomended bengkel!"</p>
+                        <div class="d-flex align-items-center gap-3 mt-3">
+                            <div class="bg-warning text-dark fw-bold rounded-circle p-2 fs-6">AP</div>
+                            <div>
+                                <h6 class="fw-bold text-white mb-0">Aditya Pratama</h6>
+                                <small class="text-muted fw-semibold">Commuter User</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="service-card p-4 h-100">
+                        <div class="text-warning mb-2">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-light small italic fs-6">"Penanganan MOGE BMW S1000RR sangat presisi! Diagnostic scanner akurat dan hasil Dyno tuning terasa maksimal di putaran atas."</p>
+                        <div class="d-flex align-items-center gap-3 mt-3">
+                            <div class="bg-warning text-dark fw-bold rounded-circle p-2 fs-6">BW</div>
+                            <div>
+                                <h6 class="fw-bold text-white mb-0">Bagas Wijaya</h6>
+                                <small class="text-muted fw-semibold">Rider BMW S1000RR</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: CONTACT & BOOKING -->
+    <section id="contact" class="bg-black">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="section-subtitle">Hubungi Kami</span>
+                <h2 class="section-title display-5">Booking Servis & Konsultasi</h2>
+                <p class="text-muted max-w-600 mx-auto fs-6">Jadwalkan kedatangan Anda untuk menghindari antrean panjang di bengkel.</p>
+            </div>
+
+            <div class="row g-4">
+                <!-- Informational Contact -->
+                <div class="col-lg-5">
+                    <div class="service-card p-4 h-100">
+                        <h4 class="fw-bold text-white mb-4">Informasi Bengkel</h4>
+                        <div class="d-flex align-items-start gap-3 mb-4">
+                            <div class="fs-4 text-warning"><i class="fa-solid fa-location-dot"></i></div>
+                            <div>
+                                <h6 class="fw-bold text-white mb-1">Alamat Garasi</h6>
+                                <p class="text-muted small mb-0 fs-6">Jl. Otomotif Presisi No. 88, Kompleks Bengkel Kinerja, Indonesia</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start gap-3 mb-4">
+                            <div class="fs-4 text-warning"><i class="fa-solid fa-clock"></i></div>
+                            <div>
+                                <h6 class="fw-bold text-white mb-1">Jam Operasional</h6>
+                                <p class="text-muted small mb-0 fs-6">Senin - Sabtu: 08:00 - 17:00 WIB<br>Minggu: Tutup / Khusus Booking Race</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start gap-3 mb-4">
+                            <div class="fs-4 text-warning"><i class="fa-solid fa-phone"></i></div>
+                            <div>
+                                <h6 class="fw-bold text-white mb-1">Telepon & WhatsApp</h6>
+                                <p class="text-muted small mb-0 fs-6">+62 812-3456-7890</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="fs-4 text-warning"><i class="fa-solid fa-envelope"></i></div>
+                            <div>
+                                <h6 class="fw-bold text-white mb-1">Email Resmi</h6>
+                                <p class="text-muted small mb-0 fs-6">info@motogarage.id</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Booking Form -->
+                <div class="col-lg-7">
+                    <div class="service-card p-4 p-md-5">
+                        <h4 class="fw-bold text-white mb-4">Formulir Booking Servis Online</h4>
+                        <form id="bookingForm" onsubmit="handleBooking(event)">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label text-light fw-bold small">Nama Lengkap</label>
+                                    <input type="text" class="form-control" placeholder="Contoh: Budi Santoso" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-light fw-bold small">Nomor WhatsApp</label>
+                                    <input type="tel" class="form-control" placeholder="0812xxxxxxxx" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-light fw-bold small">Model & Kapasitas Motor (CC)</label>
+                                    <input type="text" class="form-control" placeholder="Contoh: ZX-25R (250cc)" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-light fw-bold small">Pilih Jenis Service</label>
+                                    <select class="form-select" required>
+                                        <option value="" selected disabled>-- Pilih Jenis Servis --</option>
+                                        <option value="tuneup">Tune-Up & Maintenance Rutin</option>
+                                        <option value="dyno">Dyno Tuning & Remap ECU</option>
+                                        <option value="overhaul">Overhaul / Servis Besar</option>
+                                        <option value="custom">Modifikasi / Upgrades</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-light fw-bold small">Tanggal Kedatangan</label>
+                                    <input type="date" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-light fw-bold small">Jam Kedatangan</label>
+                                    <input type="time" class="form-control" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label text-light fw-bold small">Catatan Tambahan / Keluhan</label>
+                                    <textarea class="form-control" rows="3" placeholder="Tuliskan keluhan atau permintaan khusus jika ada..."></textarea>
+                                </div>
+                                <div class="col-12 mt-4">
+                                    <button type="submit" class="btn btn-yellow w-100 py-3">
+                                        <i class="fa-solid fa-paper-plane me-2"></i>Kirim Booking Sekarang
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black py-4 border-top border-secondary">
+        <div class="container text-center text-muted small">
+            <p class="mb-0">&copy; 2026 MOTO GARAGE. All Rights Reserved. Spesialis Garasi Motor 100cc - 1000cc.</p>
+        </div>
+    </footer>
+
+    <!-- MODAL DETAIL SERVICE -->
+    <div class="modal fade" id="serviceModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title fw-bold text-warning" id="modalTitle">Detail Layanan</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-1 text-light"><strong>Kelas Engine:</strong> <span id="modalCC"></span></p>
+                    <p class="mb-3 text-light"><strong>Estimasi Harga:</strong> <span id="modalPrice" class="text-warning fw-bold"></span></p>
+                    <h6 class="fw-bold text-white mb-2">Item Pekerjaan Termasuk:</h6>
+                    <ul id="modalItems" class="list-group list-group-flush bg-transparent"></ul>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
+                    <a href="#contact" class="btn btn-yellow btn-sm" data-bs-dismiss="modal">Booking Kelas Ini</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script Chart.js & Calculators -->
+    <script>
+        // 1. Chart.js Implementation dengan 7 Kategori Lengkap
+        const ctx = document.getElementById('dynoChart').getContext('2d');
+
+        let dynoChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    '100cc Single', 
+                    '125cc Single', 
+                    '150cc Single', 
+                    '250cc Twin', 
+                    '250cc-4Cyl (ZX25R)', 
+                    '600cc Inline-4', 
+                    '1000cc Superbike'
+                ],
+                datasets: [
+                    {
+                        label: 'Standard HP',
+                        data: [8.2, 11.5, 19.0, 38.0, 45.0, 118.0, 205.0],
+                        backgroundColor: 'rgba(108, 117, 125, 0.7)',
+                        borderColor: '#6c757d',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'MOTO GARAGE Tuned HP',
+                        data: [9.8, 13.2, 22.0, 42.5, 50.0, 126.0, 218.0],
+                        backgroundColor: 'rgba(255, 193, 7, 0.85)',
+                        borderColor: '#ffc107',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#ffffff' }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#d0d0d0' },
+                        grid: { color: 'rgba(255,255,255,0.1)' }
+                    },
+                    x: {
+                        ticks: { color: '#d0d0d0', fontSize: 10 },
+                        grid: { color: 'rgba(255,255,255,0.1)' }
+                    }
+                }
+            }
+        });
+
+        // 2. Calculator Estimator
+        function calculateEstimate() {
+            const cc = parseInt(document.getElementById('calcCC').value);
+            const type = document.getElementById('calcType').value;
+            let price = 0;
+
+            if (cc === 100) {
+                if (type === 'tuneup') price = 75000;
+                else if (type === 'dyno') price = 200000;
+                else if (type === 'full') price = 350000;
+            } else if (cc === 250) {
+                if (type === 'tuneup') price = 250000;
+                else if (type === 'dyno') price = 450000;
+                else if (type === 'full') price = 850000;
+            } else if (cc === 600) {
+                if (type === 'tuneup') price = 750000;
+                else if (type === 'dyno') price = 1200000;
+                else if (type === 'full') price = 2500000;
+            }
+
+            document.getElementById('calcResult').innerText = "Rp " + price.toLocaleString('id-ID');
+        }
+
+        // 3. Modal Service Detail
+        function openServiceModal(title, cc, price, items) {
+            document.getElementById('modalTitle').innerText = "Layanan " + title;
+            document.getElementById('modalCC').innerText = cc;
+            document.getElementById('modalPrice').innerText = price;
+            
+            const itemsList = document.getElementById('modalItems');
+            itemsList.innerHTML = "";
+            items.forEach(item => {
+                const li = document.createElement('li');
+                li.className = "list-group-item bg-transparent text-light border-secondary ps-0";
+                li.innerHTML = `<i class="fa-solid fa-check text-warning me-2"></i>${item}`;
+                itemsList.appendChild(li);
+            });
+
+            const myModal = new bootstrap.Modal(document.getElementById('serviceModal'));
+            myModal.show();
+        }
+
+        // 4. Form Booking Submission
+        function handleBooking(e) {
+            e.preventDefault();
+            alert('Terima kasih! Permintaan booking Anda telah kami terima. Tim Moto Garage akan segera menghubungi Anda melalui WhatsApp.');
+            document.getElementById('bookingForm').reset();
+        }
+    </script>
+</body>
+</html>
